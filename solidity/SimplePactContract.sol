@@ -1,8 +1,8 @@
 pragma solidity ^0.4.0;
 contract SimplePactContract {
 
-    mapping(address => mapping(address => mapping(address => bool))) confirmedPacts;
-    mapping(address => mapping(address => mapping(address => bool))) pendingPacts;
+    mapping(address => mapping(address => mapping(address => bool))) public confirmedPacts;
+    mapping(address => mapping(address => mapping(address => bool))) public pendingPacts;
 
     function SimplePactContract() public {
     }
