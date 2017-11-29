@@ -25,8 +25,17 @@ brew install web3j
 ```
 For more see [Web3j Commend Line](https://docs.web3j.io/command_line.html).
 
+Verify installation with `web3j version`.
+
 ### IntelliJ
 
 Get [IntelliJ](https://www.jetbrains.com/idea/download/)
 
 Setup IntelliJ and then go to `Plugins -> Browse repositories -> Intellij-Solidity`
+
+## Working with project
+
+### Solidity 
+
+Solidity contracts are in solidity directory.
+We can recompile all of them and recreate java classes with `./regenerate-solidity.sh`
