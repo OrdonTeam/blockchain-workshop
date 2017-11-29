@@ -24,3 +24,9 @@ brew tap web3j/web3j
 brew install web3j
 ```
 For more see [Web3j Commend Line](https://docs.web3j.io/command_line.html).
+
+### IntelliJ
+
+Get [IntelliJ](https://www.jetbrains.com/idea/download/)
+
+Setup IntelliJ and then go to `Plugins -> Browse repositories -> Intellij-Solidity`
