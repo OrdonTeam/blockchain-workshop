@@ -8,13 +8,13 @@ contract SimplePactContract {
     }
 
     function addPendingPact(address one, address other, address pactId) public {
-        if (msg.sender != one) return;
+        require(one == msg.sender);
         pendingPacts[one][other][pactId] = true;
     }
 
     function confirmPact(address one, address other, address pactId) public {
-        if (msg.sender != other) return;
-        if (!pendingPacts[one][other][pactId]) return;
+        require(other == msg.sender);
+        require(pendingPacts[one][other][pactId]);
         confirmedPacts[one][other][pactId] = true;
     }
 }
