@@ -1,7 +1,7 @@
 pragma solidity ^0.4.0;
 
 
-contract SignedPactContract {
+contract SignedOffchainPactContract {
 
     mapping (address => mapping (address => mapping (address => bool))) public confirmedPacts;
 
@@ -33,6 +33,12 @@ contract SignedPactContract {
 
     function confirmPact(address one, address other, address pactId) private {
         require(pendingPacts[one][other][pactId]);
+        confirmedPacts[one][other][pactId] = true;
+    }
+
+    function uploadPact(address one, address other, address pactId, uint otherNonce, byte otherV, bytes32 otherR, bytes32 otherS, uint oneNonce, byte oneV, bytes32 oneR, bytes32 oneS) public {
+        require(other == recoverAddress(pactHash256(one, other, pactId, otherNonce), otherV, otherR, otherS));
+        require(one == recoverAddress(pactHash256(one, other, pactId, oneNonce), oneV, oneR, oneS));
         confirmedPacts[one][other][pactId] = true;
     }
 
