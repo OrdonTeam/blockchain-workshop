@@ -2,19 +2,21 @@
 
 ## Environment
 
-### Solidity Compiler
+### Solidity Compiler and Geth
 
 Steps to install solc on Mac. Yes, it takes time. Yes, a lot of time.
 ```bash
 brew update
 brew upgrade
 brew tap ethereum/ethereum
+brew install ethereum
 brew install solidity #It took around 40 minutes
 brew linkapps solidity
 ```
 For other guides refer to [Installing solidity](http://solidity.readthedocs.io/en/develop/installing-solidity.html)
+and [Go Ethereum](https://github.com/ethereum/go-ethereum/wiki/Installation-Instructions-for-Mac)
 
-Verify installation with `solc --version`.
+Verify installation with `solc --version` and `geth version`.
 
 ### Web3j
 
