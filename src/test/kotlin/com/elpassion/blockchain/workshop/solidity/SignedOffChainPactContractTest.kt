@@ -11,7 +11,7 @@ import org.web3j.tx.Contract
 import java.math.BigInteger
 import java.util.*
 
-class SignedOffchainPactContractTest {
+class SignedOffChainPactContractTest {
 
     private val url = "https://rinkeby.infura.io/0ZevQ4HkUCzCVBOsYZcQ"
     private val web3jService = HttpService(url)
@@ -31,6 +31,6 @@ class SignedOffchainPactContractTest {
         contract.uploadPact(one.address, other.address, pactId,
                 nonce, byteArrayOf(otherSignature.v), otherSignature.r, otherSignature.s,
                 nonce, byteArrayOf(oneSignature.v), oneSignature.r, oneSignature.s).send()
-        assert(contract.confirmedPacts(one.address, other.address, pactId).send())
+        assertTrue(contract.confirmedPacts(one.address, other.address, pactId).send())
     }
 }
