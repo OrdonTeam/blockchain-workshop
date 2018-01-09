@@ -24,12 +24,12 @@ class SignedOffChainPactContractTest {
 
     @Test
     fun shouldUploadPact() {
-        val contract = SignedOffchainPactContract.deploy(web3j, credentials, Contract.GAS_PRICE, Contract.GAS_LIMIT).send()
+        val contract = SignedOffChainPactContract.deploy(web3j, credentials, Contract.GAS_PRICE, Contract.GAS_LIMIT).send()
         uploadPact(contract)
         assertTrue(contract.confirmedPacts(one.address, other.address, pactId).send())
     }
 
-    private fun uploadPact(contract: SignedOffchainPactContract) {
+    private fun uploadPact(contract: SignedOffChainPactContract) {
         val hash = contract.pactHash256(one.address, other.address, pactId, nonce).send()
         val oneSignature = Sign.signMessage(hash, one.ecKeyPair)
         val otherSignature = Sign.signMessage(hash, other.ecKeyPair)

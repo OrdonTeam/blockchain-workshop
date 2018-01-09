@@ -1,7 +1,7 @@
 pragma solidity ^0.4.0;
 
 
-contract SignedOffchainPactContract {
+contract SignedOffChainPactContract {
 
     mapping (address => mapping (address => mapping (address => bool))) public confirmedPacts;
 

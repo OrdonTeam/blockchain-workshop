@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 rm -r solidity-out
+rm -r src/main/kotlin/com/elpassion/blockchain/workshop/solidity
 for f in `ls solidity`
 do
     solName=solidity/$f
