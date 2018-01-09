@@ -4,4 +4,4 @@
 /build
 /out
 /solidity-out
-/testnet/data
+/local-testnet/data
