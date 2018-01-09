@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 rm -r solidity-out
 for f in `ls solidity`
 do
