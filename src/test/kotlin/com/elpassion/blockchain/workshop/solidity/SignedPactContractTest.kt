@@ -13,7 +13,7 @@ import java.util.*
 
 class SignedPactContractTest {
 
-    private val url = "https://rinkeby.infura.io/0ZevQ4HkUCzCVBOsYZcQ"
+    private val url = "http://127.0.0.1:8545"
     private val web3jService = HttpService(url)
     private val web3j = JsonRpc2_0Web3j(web3jService)
     private val credentials = Credentials.create("c65918c493e7f7dc268ac64d2e978ddf540d5995fda3e68680a5743dd1d8a106")
