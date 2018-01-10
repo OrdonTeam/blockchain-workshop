@@ -17,8 +17,8 @@ class SimplePactContractTest {
     @Test
     fun shouldConfirmAddedPact() {
         val contract = SimplePactContract.deploy(web3j, credentials, Contract.GAS_PRICE, Contract.GAS_LIMIT).send()
-        contract.addPendingPact(serverAddress, serverAddress, serverAddress).send()
-        contract.confirmPact(serverAddress, serverAddress, serverAddress).send()
-        assert(contract.confirmedPacts(serverAddress, serverAddress, serverAddress).send())
+        contract.addPendingPact(serverAddress, serverAddress, "pactId").send()
+        contract.confirmPact(serverAddress, serverAddress, "pactId").send()
+        assert(contract.isConfirmedPact(serverAddress, serverAddress, "pactId").send())
     }
 }
