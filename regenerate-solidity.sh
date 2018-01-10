@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 rm -r solidity-out | true
-rm -r src/main/kotlin/com/elpassion/blockchain/workshop/solidity | true
+rm -r src/main/java/com/elpassion/blockchain/workshop/solidity | true
 for f in `ls solidity`
 do
     solName=solidity/$f
