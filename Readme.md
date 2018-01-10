@@ -41,3 +41,10 @@ Setup IntelliJ and then go to `Plugins -> Browse repositories -> Intellij-Solidi
 
 Solidity contracts are in solidity directory.
 We can recompile all of them and recreate java classes with `./regenerate-solidity.sh`
+
+### Tests
+
+To run test fast we recommend ganache.
+```bash
+npm install -g ganache-cli
+```
