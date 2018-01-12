@@ -28,6 +28,7 @@ contract SimplePactContract {
 
     function addSignedPact(address one, address other, string pactId, byte v, bytes32 r, bytes32 s) public {
         require(one == recoverAddress(pactHash256(one, other, pactId), v, r, s));
+        require(other == msg.sender);
         confirmedPacts[one][other][pactId] = true;
     }
 

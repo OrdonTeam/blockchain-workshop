@@ -83,4 +83,16 @@ class SimplePactContractTest {
         //B: Here we received signature and we are adding pact to contract
         contract.addSignedPact("0x0", other, "pact-id", byteArrayOf(signature.v), signature.r, signature.s).send()
     }
+
+    @Test(expected = RuntimeException::class)
+    fun `should check message sender before adding signed pact`() {
+        //Contract is created earlier
+        val contract = SimplePactContract.deploy(web3j, credentials, Contract.GAS_PRICE, Contract.GAS_LIMIT).send()
+        //A: We sign pact here
+        val newOne = Credentials.create(Keys.createEcKeyPair())
+        val hash = contract.pactHash256(newOne.address, newOne.address, "pact-id").send()
+        val signature = Sign.signMessage(hash, newOne.ecKeyPair)
+        //B: Here we received signature and we are adding pact to contract
+        contract.addSignedPact(newOne.address, newOne.address, "pact-id", byteArrayOf(signature.v), signature.r, signature.s).send()
+    }
 }
