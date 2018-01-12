@@ -3,12 +3,15 @@ pragma solidity ^0.4.0;
 
 contract SimplePactContract {
 
+    event PactConfirmed(address one, address other, string pactId);
+
     mapping (address => mapping (address => mapping (string => bool))) confirmedPacts;
 
     function addFullySignedPact(address one, address other, string pactId, byte oneV, bytes32 oneR, bytes32 oneS, byte otherV, bytes32 otherR, bytes32 otherS) {
         require(one == recoverAddress(pactHash256(one, other, pactId), oneV, oneR, oneS));
         require(other == recoverAddress(pactHash256(one, other, pactId), otherV, otherR, otherS));
         confirmedPacts[one][other][pactId] = true;
+        PactConfirmed(one, other, pactId);
     }
 
     function isConfirmed(address one, address other, string pactId) constant public returns (bool) {
