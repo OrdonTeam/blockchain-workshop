@@ -11,14 +11,9 @@ contract SimplePactContract {
 
     }
 
-    function addPendingPact(address one, address other, string pactId) public {
-        require(msg.sender == one);
-        pendingPacts[one][other][pactId] = true;
-    }
-
-    function confirmPact(address one, address other, string pactId) public {
-        require(msg.sender == other);
-        require(pendingPacts[one][other][pactId]);
+    function addFullySignedPact(address one, address other, string pactId, byte oneV, bytes32 oneR, bytes32 oneS, byte otherV, bytes32 otherR, bytes32 otherS) {
+        require(one == recoverAddress(pactHash256(one, other, pactId), oneV, oneR, oneS));
+        require(other == recoverAddress(pactHash256(one, other, pactId), otherV, otherR, otherS));
         confirmedPacts[one][other][pactId] = true;
     }
 
@@ -26,25 +21,11 @@ contract SimplePactContract {
         return confirmedPacts[one][other][pactId];
     }
 
-    function addSignedPact(address one, address other, string pactId, byte v, bytes32 r, bytes32 s) public {
-        require(one == recoverAddress(pactHash256(one, other, pactId), v, r, s));
-        require(other == msg.sender);
-        confirmedPacts[one][other][pactId] = true;
-    }
-
     function pactHash256(address one, address other, string pactId) constant public returns (bytes32) {
         return sha256(this, one, other, pactId);
     }
 
-    function recoverAddress(bytes32 hash, byte v, bytes32 r, bytes32 s) pure public returns (address) {
+    function recoverAddress(bytes32 hash, byte v, bytes32 r, bytes32 s) pure private returns (address) {
         return ecrecover(keccak256(hash), uint8(v), r, s);
-    }
-
-    function addFullySignedPact(address one, address other, string pactId,
-                                byte oneV, bytes32 oneR, bytes32 oneS,
-                                byte otherV, bytes32 otherR, bytes32 otherS) {
-        require(one == recoverAddress(pactHash256(one, other, pactId), oneV, oneR, oneS));
-        require(other == recoverAddress(pactHash256(one, other, pactId), otherV, otherR, otherS));
-        confirmedPacts[one][other][pactId] = true;
     }
 }
