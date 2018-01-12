@@ -21,7 +21,6 @@ class SimplePactContractTest {
 
     @Test
     fun shouldNotConfirmPactByDefault() {
-        val contract = SimplePactContract.deploy(web3j, serverCredentials, Contract.GAS_PRICE, Contract.GAS_LIMIT).send()
         Assert.assertFalse(contract.isConfirmed(one.address, other.address, "pact-id").send())
     }
 
@@ -70,6 +69,4 @@ class SimplePactContractTest {
                 byteArrayOf(otherSignature.v), otherSignature.r, otherSignature.s
         ).send()
     }
-
-
 }
