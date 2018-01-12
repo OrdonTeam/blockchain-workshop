@@ -1,6 +1,7 @@
 package com.elpassion.blockchain.workshop.solidity
 
 import org.junit.Assert
+import org.junit.Ignore
 import org.junit.Test
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.Keys
@@ -79,6 +80,15 @@ class SimplePactContractTest {
                 DefaultBlockParameter.valueOf(contract.transactionReceipt.get().blockNumber),
                 DefaultBlockParameter.valueOf(BigInteger.valueOf(10_000_000L))).test()
         emitPactConfirmedEvent()
+        subscriber.awaitValueCount(1, 1, TimeUnit.MINUTES)
+    }
+
+    @Test
+    fun `should retrieve events from before subscribe`() {
+        emitPactConfirmedEvent()
+        val subscriber = contract.pactConfirmedEventObservable(
+                DefaultBlockParameter.valueOf(contract.transactionReceipt.get().blockNumber),
+                DefaultBlockParameter.valueOf(BigInteger.valueOf(10_000_000L))).test()
         subscriber.awaitValueCount(1, 1, TimeUnit.MINUTES)
     }
 
