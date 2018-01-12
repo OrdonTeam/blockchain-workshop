@@ -3,6 +3,8 @@ package com.elpassion.blockchain.workshop.solidity
 import org.junit.Assert
 import org.junit.Test
 import org.web3j.crypto.Credentials
+import org.web3j.crypto.Keys
+import org.web3j.crypto.Sign
 import org.web3j.protocol.core.JsonRpc2_0Web3j
 import org.web3j.protocol.http.HttpService
 import org.web3j.tx.Contract
@@ -55,5 +57,18 @@ class SimplePactContractTest {
         val contract = SimplePactContract.deploy(web3j, credentials, Contract.GAS_PRICE, Contract.GAS_LIMIT).send()
         contract.addPendingPact(one, "0x0", "pact-id").send()
         contract.confirmPact(one, "0x0", "pact-id").send()
+    }
+
+    @Test
+    fun `should add pre signed pact`() {
+        //Contract is created earlier
+        val contract = SimplePactContract.deploy(web3j, credentials, Contract.GAS_PRICE, Contract.GAS_LIMIT).send()
+        //A: We sign pact here
+        val newOne = Credentials.create(Keys.createEcKeyPair())
+        val hash = contract.pactHash256(newOne.address, other, "pact-id").send()
+        val signature = Sign.signMessage(hash, newOne.ecKeyPair)
+        //B: Here we received signature and we are adding pact to contract
+        contract.addSignedPact(newOne.address, other, "pact-id", byteArrayOf(signature.v), signature.r, signature.s).send()
+        Assert.assertTrue(contract.isConfirmed(newOne.address, other, "pact-id").send())
     }
 }
