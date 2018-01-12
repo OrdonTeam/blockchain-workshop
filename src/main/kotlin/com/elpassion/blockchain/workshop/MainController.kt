@@ -27,12 +27,12 @@ class MainController {
         val contract = SimplePactContract.load("0x88c0a2d6d0c8d19c63d8fb458e1cc6a8ca26e312", web3j, credentials, Contract.GAS_PRICE, Contract.GAS_LIMIT)
         val decoder = Base64.getDecoder()
         with(request) {
-            contract.addFullySignedPact(oneAddr, otherAddr, "pactId", byteArrayOf(oneVrs.v), decoder.decode(oneVrs.r), decoder.decode(oneVrs.s),
+            contract.addFullySignedPact(oneAddr, otherAddr, pactId, byteArrayOf(oneVrs.v), decoder.decode(oneVrs.r), decoder.decode(oneVrs.s),
                     byteArrayOf(otherVrs.v), decoder.decode(otherVrs.r), decoder.decode(otherVrs.s))
         }.send()
         println(request)
     }
 }
 
-data class Request(val oneAddr: String, val otherAddr: String, val oneVrs: VRSComplet, val otherVrs: VRSComplet)
+data class Request(val oneAddr: String, val otherAddr: String, val oneVrs: VRSComplet, val otherVrs: VRSComplet, val pactId: String)
 data class VRSComplet(val v: Byte, val r: String, val s: String)
