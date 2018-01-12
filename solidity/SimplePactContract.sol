@@ -5,12 +5,6 @@ contract SimplePactContract {
 
     mapping (address => mapping (address => mapping (string => bool))) confirmedPacts;
 
-    mapping (address => mapping (address => mapping (string => bool))) pendingPacts;
-
-    function SimplePactContract() public {
-
-    }
-
     function addFullySignedPact(address one, address other, string pactId, byte oneV, bytes32 oneR, bytes32 oneS, byte otherV, bytes32 otherR, bytes32 otherS) {
         require(one == recoverAddress(pactHash256(one, other, pactId), oneV, oneR, oneS));
         require(other == recoverAddress(pactHash256(one, other, pactId), otherV, otherR, otherS));
