@@ -11,7 +11,6 @@ contract SimplePactContract {
         require(one == recoverAddress(pactHash256(one, other, pactId), oneV, oneR, oneS));
         require(other == recoverAddress(pactHash256(one, other, pactId), otherV, otherR, otherS));
         confirmedPacts[one][other][pactId] = true;
-        PactConfirmed(one, other, pactId);
     }
 
     function isConfirmed(address one, address other, string pactId) constant public returns (bool) {

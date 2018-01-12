@@ -1,5 +1,6 @@
 package com.elpassion.blockchain.workshop.solidity
 
+import org.junit.After
 import org.junit.Assert
 import org.junit.Ignore
 import org.junit.Test
@@ -15,7 +16,7 @@ import java.util.concurrent.TimeUnit
 
 class SimplePactContractTest {
 
-    private val url = "http://localhost:8000"
+    private val url = "http://localhost:8545"
     private val web3jService = HttpService(url)
     private val web3j = JsonRpc2_0Web3j(web3jService)
     private val serverCredentials = Credentials.create("c65918c493e7f7dc268ac64d2e978ddf540d5995fda3e68680a5743dd1d8a106")
@@ -29,7 +30,7 @@ class SimplePactContractTest {
     }
 
     @Test
-    fun `should add fully pre signed pact`() {
+    fun aaa() {
         val hash = contract.pactHash256(one.address, other.address, "pact-id").send()
         //A: We sign pact here
         val oneSignature = Sign.signMessage(hash, one.ecKeyPair)
