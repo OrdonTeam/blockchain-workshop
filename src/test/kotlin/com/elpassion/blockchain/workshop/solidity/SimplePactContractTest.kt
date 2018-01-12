@@ -95,4 +95,64 @@ class SimplePactContractTest {
         //B: Here we received signature and we are adding pact to contract
         contract.addSignedPact(newOne.address, newOne.address, "pact-id", byteArrayOf(signature.v), signature.r, signature.s).send()
     }
+
+    @Test
+    fun `should add fully pre signed pact`() {
+        //Contract is created earlier
+        val contract = SimplePactContract.deploy(web3j, credentials, Contract.GAS_PRICE, Contract.GAS_LIMIT).send()
+        val newOne = Credentials.create(Keys.createEcKeyPair())
+        val newOther = Credentials.create(Keys.createEcKeyPair())
+        val hash = contract.pactHash256(newOne.address, newOther.address, "pact-id").send()
+        //A: We sign pact here
+        val oneSignature = Sign.signMessage(hash, newOne.ecKeyPair)
+        //B: We sign pact here
+        val otherSignature = Sign.signMessage(hash, newOther.ecKeyPair)
+        //On server we add pact
+        contract.addFullySignedPact(
+                newOne.address, newOther.address, "pact-id",
+                byteArrayOf(oneSignature.v), oneSignature.r, oneSignature.s,
+                byteArrayOf(otherSignature.v), otherSignature.r, otherSignature.s
+        ).send()
+        Assert.assertTrue(contract.isConfirmed(newOne.address, newOther.address, "pact-id").send())
+    }
+
+    @Test(expected = RuntimeException::class)
+    fun `should check one's signature before adding fully pre signed pact`(){
+        //Contract is created earlier
+        val contract = SimplePactContract.deploy(web3j, credentials, Contract.GAS_PRICE, Contract.GAS_LIMIT).send()
+        val newOne = Credentials.create(Keys.createEcKeyPair())
+        val newOther = Credentials.create(Keys.createEcKeyPair())
+        val hash = contract.pactHash256("0x0", newOther.address, "pact-id").send()
+        //A: We sign pact here
+        val oneSignature = Sign.signMessage(hash, newOne.ecKeyPair)
+        //B: We sign pact here
+        val otherSignature = Sign.signMessage(hash, newOther.ecKeyPair)
+        //On server we add pact
+        contract.addFullySignedPact(
+                "0x0", newOther.address, "pact-id",
+                byteArrayOf(oneSignature.v), oneSignature.r, oneSignature.s,
+                byteArrayOf(otherSignature.v), otherSignature.r, otherSignature.s
+        ).send()
+    }
+
+    @Test(expected = RuntimeException::class)
+    fun `should check other's signature before adding fully pre signed pact`(){
+        //Contract is created earlier
+        val contract = SimplePactContract.deploy(web3j, credentials, Contract.GAS_PRICE, Contract.GAS_LIMIT).send()
+        val newOne = Credentials.create(Keys.createEcKeyPair())
+        val newOther = Credentials.create(Keys.createEcKeyPair())
+        val hash = contract.pactHash256(newOne.address, "0x0", "pact-id").send()
+        //A: We sign pact here
+        val oneSignature = Sign.signMessage(hash, newOne.ecKeyPair)
+        //B: We sign pact here
+        val otherSignature = Sign.signMessage(hash, newOther.ecKeyPair)
+        //On server we add pact
+        contract.addFullySignedPact(
+                newOne.address, "0x0", "pact-id",
+                byteArrayOf(oneSignature.v), oneSignature.r, oneSignature.s,
+                byteArrayOf(otherSignature.v), otherSignature.r, otherSignature.s
+        ).send()
+    }
+
+
 }

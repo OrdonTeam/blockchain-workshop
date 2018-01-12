@@ -39,4 +39,12 @@ contract SimplePactContract {
     function recoverAddress(bytes32 hash, byte v, bytes32 r, bytes32 s) pure public returns (address) {
         return ecrecover(keccak256(hash), uint8(v), r, s);
     }
+
+    function addFullySignedPact(address one, address other, string pactId,
+                                byte oneV, bytes32 oneR, bytes32 oneS,
+                                byte otherV, bytes32 otherR, bytes32 otherS) {
+        require(one == recoverAddress(pactHash256(one, other, pactId), oneV, oneR, oneS));
+        require(other == recoverAddress(pactHash256(one, other, pactId), otherV, otherR, otherS));
+        confirmedPacts[one][other][pactId] = true;
+    }
 }
