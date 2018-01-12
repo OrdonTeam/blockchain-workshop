@@ -26,6 +26,11 @@ contract SimplePactContract {
         return confirmedPacts[one][other][pactId];
     }
 
+    function addSignedPact(address one, address other, string pactId, byte v, bytes32 r, bytes32 s) public {
+        require(one == recoverAddress(pactHash256(one, other, pactId), v, r, s));
+        confirmedPacts[one][other][pactId] = true;
+    }
+
     function pactHash256(address one, address other, string pactId) constant public returns (bytes32) {
         return sha256(this, one, other, pactId);
     }
