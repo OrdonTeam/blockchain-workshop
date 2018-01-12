@@ -50,6 +50,8 @@ dependencies {
 }
 
 task regenerateSolc(type:Exec) {
+	inputs.dir("solidity")
+	outputs.dir("src/main/java/com/elpassion/blockchain/workshop/solidity")
 	commandLine './regenerate-solidity.sh'
 
 	standardOutput = new ByteArrayOutputStream()
