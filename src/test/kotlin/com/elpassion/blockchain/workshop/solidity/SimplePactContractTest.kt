@@ -16,6 +16,7 @@ class SimplePactContractTest {
     private val one = credentials.address
     private val other = credentials.address
 
+
     @Test
     fun shouldConfirmAddedPact() {
         val contract = SimplePactContract.deploy(web3j, credentials, Contract.GAS_PRICE, Contract.GAS_LIMIT).send()
@@ -41,5 +42,18 @@ class SimplePactContractTest {
     fun `should not confirm not pending pact`() {
         val contract = SimplePactContract.deploy(web3j, credentials, Contract.GAS_PRICE, Contract.GAS_LIMIT).send()
         contract.confirmPact(one, other, "pact-id").send()
+    }
+
+    @Test(expected = RuntimeException::class)
+    fun `should not allow other to add pact on our behalf`() {
+        val contract = SimplePactContract.deploy(web3j, credentials, Contract.GAS_PRICE, Contract.GAS_LIMIT).send()
+        contract.addPendingPact("0x0", other, "pactId").send()
+    }
+
+    @Test(expected = RuntimeException::class)
+    fun `should not allow to confirm pact on our behalf`() {
+        val contract = SimplePactContract.deploy(web3j, credentials, Contract.GAS_PRICE, Contract.GAS_LIMIT).send()
+        contract.addPendingPact(one, "0x0", "pact-id").send()
+        contract.confirmPact(one, "0x0", "pact-id").send()
     }
 }

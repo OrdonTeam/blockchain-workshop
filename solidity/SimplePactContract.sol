@@ -11,10 +11,12 @@ contract SimplePactContract {
     }
 
     function addPendingPact(address one, address other, string pactId) public {
+        require(msg.sender == one);
         pendingPacts[one][other][pactId] = true;
     }
 
     function confirmPact(address one, address other, string pactId) public {
+        require(msg.sender == other);
         require(pendingPacts[one][other][pactId]);
         confirmedPacts[one][other][pactId] = true;
     }
